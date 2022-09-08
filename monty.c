@@ -8,24 +8,27 @@ var_t var;
  * @arg: double pointer to the stack
  * @status: exit status
  */
+
 void free_stack(int status, void *arg)
 {
-stack_t **stack;
-stack_t *tmp;
-(void) status;
-stack = (stack_t **)arg;
-if (*stack)
-{
-(*stack)->prev->next = NULL;
-(*stack)->prev = NULL;
-}
-while (*stack != NULL)
-{
-tmp = (*stack)->next;
-free(*stack);
-*stack = tmp;
-}
-var.len_stack = 0;
+	stack_t **stack;
+	stack_t *tmp;
+
+	(void) status;
+	stack = (stack_t **)arg;
+
+	if (*stack)
+	{
+		(*stack)->prev->next = NULL;
+		(*stack)->prev = NULL;
+	}
+	while (*stack != NULL)
+	{
+		tmp = (*stack)->next;
+		free(*stack);
+		*stack = tmp;
+	}
+	var.len_stack = 0;
 }
 
 /**
@@ -33,12 +36,15 @@ var.len_stack = 0;
  * @status: exit status
  * @arg: pointer to line
  */
+
 void free_lineptr(int status, void *arg)
 {
-char **lineptr = arg;
-(void) status;
-if (*lineptr != NULL)
-free(*lineptr);
+	char **lineptr = arg;
+
+	(void) status;
+
+	if (*lineptr != NULL)
+		free(*lineptr);
 }
 
 /**
@@ -46,12 +52,14 @@ free(*lineptr);
  * @status: status passed to exit
  * @arg: pointer to file stream
  */
+
 void myfile_close(int status, void *arg)
 {
-FILE *myfile;
-(void) status;
-myfile = (FILE *) arg;
-fclose(myfile);
+	FILE *myfile;
+
+	(void) status;
+	myfile = (FILE *) arg;
+	fclose(myfile);
 }
 
 
@@ -64,38 +72,37 @@ fclose(myfile);
 
 int main(int argc, char *argv[])
 {
-stack_t *stack = NULL;
-unsigned int line = 0;
-FILE *myfile = NULL;
-char *lineptr = NULL, *oper = NULL;
-size_t llen = 0;
+	stack_t *stack = NULL;
+	unsigned int line = 0;
+	FILE *myfile = NULL;
+	char lineptr[BUF_SIZE] = NULL, *oper = NULL;
+	int status = 0;
 
-var.len_queue = 0;
-var.len_stack = 0;
-if (argc != 2)
-{
-fprintf(stderr, "USAGE: monty file\n");
-exit(EXIT_FAILURE);
-}
-myfile = fopen(argv[1], "r");
-if (myfile == NULL)
-{
-fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
-exit(EXIT_FAILURE);
-}
+	var.len_queue = 0;
+	var.len_stack = 0;
+	if (argc != 2)
+	{
+		fprintf(stderr, "USAGE: monty file\n");
+		exit(EXIT_FAILURE);
+	}
+	myfile = fopen(argv[1], "r");
+	if (myfile == NULL)
+	{
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+		exit(EXIT_FAILURE);
+	}
 
-on_exit(free_lineptr, &lineptr);
-on_exit(free_stack, &stack);
-on_exit(myfile_close, myfile);
-
-while (getline(&lineptr, &llen, myfile) != -1)
-{
-line++;
-oper = strtok(lineptr, "\n\t\r ");
-if (oper != NULL && oper[0] != '#')
-{
-call_oper(&stack, oper, line);
-}
-}
-exit(EXIT_SUCCESS);
+	while (fgets(lineptr, BUF_SIZE, myfile))
+	{
+		line++;
+		oper = strtok(lineptr, "\n\t\r ");
+		if (oper != NULL && oper[0] != '#')
+		{
+			call_oper(&stack, oper, line);
+		}
+	}
+	free_lineptr(status, &lineptr);
+	free_stack(status, &stack);
+	myfile_close(status, &myfile);
+	exit(EXIT_SUCCESS);
 }
