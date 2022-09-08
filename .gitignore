@@ -1,1 +1,4 @@
 instruct*
+stack.c
+monty.c
+linkedlist.c

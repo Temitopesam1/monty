@@ -12,7 +12,7 @@
 
 #define STACK 0
 #define QUEUE 1
-
+#define BUF_SIZE 1024
 /**
  * struct var_s - struct contains main variables of the Monty interpreter
  * @len_queue: flag 0: stack, 1: queue
@@ -57,9 +57,9 @@ void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
 stack_t *add_node(stack_t **stack, const int n);
-void free_stack(int status, void *arg);
-void free_lineptr(int status, void *arg);
-void myfile_close(int status, void *arg);
+void free_stack(int __attribute__ ((unused)) status, void *arg);
+void free_lineptr(int __attribute__ ((unused)) status, void *arg);
+void myfile_close(int __attribute__ ((unused)) status, void *arg);
 void call_oper(stack_t **stack, char *oper, unsigned int line);
 
 void instruct_push(stack_t **stack, unsigned int line);
