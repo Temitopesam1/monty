@@ -70,39 +70,39 @@ void myfile_close(int status, void *arg)
 
 int main(int argc, char *argv[])
 {
-int status = 0;
-stack_t *stack = NULL;
-unsigned int line = 0;
-FILE *myfile = NULL;
+	int status = 0;
+	stack_t *stack = NULL;
+	unsigned int line = 0;
+	FILE *myfile = NULL;
 
-char lineptr[BUF_SIZE], *oper = NULL;                                                 
+	char lineptr[BUF_SIZE], *oper = NULL;                                                 
 
-var.len_queue = 0;
-var.len_stack = 0;
-if (argc != 2)
-{
-fprintf(stderr, "USAGE: monty file\n");
-exit(EXIT_FAILURE);
-}
-myfile = fopen(argv[1], "r");
-if (myfile == NULL)
-{
-fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
-exit(EXIT_FAILURE);
-}
+	var.len_queue = 0;
+	var.len_stack = 0;
+	if (argc != 2)
+	{
+		fprintf(stderr, "USAGE: monty file\n");
+		exit(EXIT_FAILURE);
+	}
+	myfile = fopen(argv[1], "r");
+	if (myfile == NULL)
+	{
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+		exit(EXIT_FAILURE);
+	}
 
-while (fgets(lineptr, BUF_SIZE, myfile))
-{
+	while (fgets(lineptr, BUF_SIZE, myfile))
+	{
 
-line++;
-oper = strtok(lineptr, "\n\t\r ");
-if (oper != NULL && oper[0] != '#')
-{
-call_oper(&stack, oper, line);
-}
-}
-free_lineptr(status, &lineptr);
-free_stack(status, &stack);
-myfile_close(status, myfile);
-exit(EXIT_SUCCESS);
+		line++;
+		oper = strtok(lineptr, "\n\t\r ");
+		if (oper != NULL && oper[0] != '#')
+		{
+			call_oper(&stack, oper, line);
+		}
+	}
+/**	free_lineptr(status, &lineptr);**/
+	free_stack(status, &stack);
+	myfile_close(status, myfile);
+	exit(EXIT_SUCCESS);
 }
