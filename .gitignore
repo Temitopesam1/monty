@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 instruct*
 stack.c
 monty.c
 linkedlist.c
+=======
+*.swp
+>>>>>>> b756dd6e0dfb3bc744d0d9d6fbe7cf11dbc8df0e
