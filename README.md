@@ -40,7 +40,7 @@ $
 To compile all files:
 
 ```bash
-$ gcc -Wall -Werror -Wextra -pedantic *.c -o monty
+$ gcc -Wall -Werror -Wextra -pedantic -std=c89 *.c -o monty
 $
 ```
 
