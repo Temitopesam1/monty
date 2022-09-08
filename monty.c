@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
 			call_oper(&stack, oper, line);
 		}
 	}
-/**	free_lineptr(status, &lineptr);**/
+
 	free_stack(status, &stack);
 	myfile_close(status, myfile);
 	exit(EXIT_SUCCESS);
