@@ -1,97 +1,102 @@
 #include "monty.h"
 
-/**
- * instruct_add - adds the top two elements of the stack
- * @stack: pointer to the top node of stack
- * @line: the current file line number calling instruction
- */
-
-void instruct_add(stack_t **stack, unsigned int line)
+int _isascii(int c)
 {
-	int n = 0;
-
-	if (var.len_stack < 2)
-	{
-		fprintf(stderr, "L%u: can't add, stack too short\n", line);
-		exit(EXIT_FAILURE);
-	}
-	n += (*stack)->n;
-	instruct_pop(stack, line);
-	(*stack)->n += n;
+	  return((c <= 127) && (c >= 0));
 }
-
 /**
- * instruct_nop - nop doesn’t do anything
+ *
+ * instruct_mod - rest of the division of the second top by the top
  * @stack: pointer to the top node of stack
  * @line: the current file line number calling instruction
  */
-
-void instruct_nop(stack_t **stack __attribute__ ((unused)), unsigned int line)
-{
-	(void) line;
-}
-
-/**
- * instruct_sub - sub subtracts the top from the second top element
- * @stack: pointer to the top node of stack
- * @line: the current file line number calling instruction
- */
-
-void instruct_sub(stack_t **stack, unsigned int line)
+void instruct_mod(stack_t **stack, unsigned int line)
 {
 	int n;
 
 	if (var.len_stack < 2)
 	{
-		fprintf(stderr, "L%u: can't sub, stack too short\n", line);
+		fprintf(stderr, "L%u: can't mod, stack too short\n", line);
 		exit(EXIT_FAILURE);
 	}
 	n = (*stack)->n;
 	instruct_pop(stack, line);
-	(*stack)->n -= n;
-}
 
-/**
- * instruct_div - divides the second top by the top element of the stack
- * @stack: pointer to the top node of stack
- * @line: the current file line number calling instruction
- */
-
-void instruct_div(stack_t **stack, unsigned int line)
-{
-	int n;
-
-	if (var.len_stack < 2)
-	{
-		fprintf(stderr, "L%u: can't div, stack too short\n", line);
-		exit(EXIT_FAILURE);
-	}
-	n = (*stack)->n;
-	instruct_pop(stack, line);
 	if (n == 0)
 	{
 		fprintf(stderr, "L%u: division by zero\n", line);
 		exit(EXIT_FAILURE);
 	}
-	(*stack)->n /= n;
+	(*stack)->n %= n;
 }
 
 /**
- * instruct_mul - multiplies the second top with the top element
+ * instruct_pchar - prints the char at the top of the stack
  * @stack: pointer to the top node of stack
  * @line: the current file line number calling instruction
  */
-
-void instruct_mul(stack_t **stack, unsigned int line)
+void instruct_pchar(stack_t **stack, unsigned int line)
 {
-	int n;
+	int ch;
 
-	if (var.len_stack < 2)
+	if (var.len_stack < 1)
 	{
-		fprintf(stderr, "L%u: can't mul, stack too short\n", line);
+		fprintf(stderr, "L%u: can't pchar, stack empty\n", line);
 		exit(EXIT_FAILURE);
 	}
-	n = (*stack)->n;
-	instruct_pop(stack, line);
-	(*stack)->n *= n;
+	ch = (*stack)->n;
+	
+	if (!_isascii(ch))
+	{
+		fprintf(stderr, "L%u: can't pchar, value out of range\n", line);
+		exit(EXIT_FAILURE);
+	}
+	printf("%c\n", ch);
+}
+
+/**
+ * instruct_pstr - prints the string starting at the top of the stack
+ * @stack: pointer to the top node of stack
+ * @line: the current file line number calling instruction
+ */
+void instruct_pstr(stack_t **stack, unsigned int line __attribute__ ((unused)))
+{
+	stack_t *tmp;
+	int ch;
+	
+	tmp = *stack;
+	
+	while (tmp != NULL)
+	{
+		ch = tmp->n;
+		if (!_isascii(ch) || ch == 0)
+			break;
+		putchar(ch);
+		tmp = tmp->next;
+		if (tmp == *stack)
+			break;
+	}
+	putchar('\n');
+}
+
+/**
+ * instruct_rotl - rotl rotates the stack to the top
+ * @stack: pointer to the top node of stack
+ * @line: the current file line number calling instruction
+ */
+void instruct_rotl(stack_t **stack, unsigned int line __attribute__ ((unused)))
+{
+	if (*stack)
+		*stack = (*stack)->next;
+}
+
+/**
+ * instruct_rotr - rotr rotates the stack to the bottom
+ * @stack: pointer to the top node of stack
+ * @line: the current file line number calling instruction
+ */
+void instruct_rotr(stack_t **stack, unsigned int line __attribute__ ((unused)))
+{
+	if (*stack)
+		*stack = (*stack)->prev;
 }
