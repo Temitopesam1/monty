@@ -2,13 +2,11 @@
 
 /* global struct to hold flag for queue and stack length */
 var_t var;
-
 /**
- * free_stack - frees malloced in stack nodes memory
- * @arg: double pointer to the stack
- * @status: exit status
- */
-
+  * free_stack - frees malloced in stack nodes memory
+  * @arg: double pointer to the stack
+  * @status: exit status
+  * */
 
 void free_stack(int status, void *arg)
 {
@@ -75,7 +73,7 @@ int main(int argc, char *argv[])
 	unsigned int line = 0;
 	FILE *myfile = NULL;
 
-	char lineptr[BUF_SIZE], *oper = NULL;                                                 
+	char lineptr[BUF_SIZE], *oper = NULL;
 
 	var.len_queue = 0;
 	var.len_stack = 0;
