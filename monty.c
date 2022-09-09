@@ -75,8 +75,7 @@ int main(int argc, char *argv[])
 	unsigned int line = 0;
 	FILE *myfile = NULL;
 
-	char lineptr[BUF_SIZE], *oper = NULL;                                                 
-
+	char lineptr[BUF_SIZE], *oper = NULL;
 	var.len_queue = 0;
 	var.len_stack = 0;
 	if (argc != 2)
