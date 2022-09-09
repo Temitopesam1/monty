@@ -74,10 +74,6 @@ int main(int argc, char *argv[])
 	FILE *myfile = NULL;
 
 	char lineptr[BUF_SIZE], *oper = NULL;
-<<<<<<< HEAD
-
-=======
->>>>>>> 293d9782fb98dc3a3da779f4dc97b3c85925e5b3
 	var.len_queue = 0;
 	var.len_stack = 0;
 	if (argc != 2)
